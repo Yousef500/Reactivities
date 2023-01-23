@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System.Security.Claims;
 
@@ -34,7 +35,7 @@ namespace Infrastructure.Security
                 .Parse(_httpContextAccessor.HttpContext?.Request.RouteValues
                 .SingleOrDefault(x => x.Key == "id").Value?.ToString());
 
-            var attendee = _dbContext.ActivityAttendees.FindAsync(userId, activityId).Result;
+            var attendee = _dbContext.ActivityAttendees.AsNoTracking().SingleOrDefaultAsync(aa => aa.AppUserId == userId && aa.ActivityId == activityId).Result;
 
             if (attendee == null) return Task.CompletedTask;
 
