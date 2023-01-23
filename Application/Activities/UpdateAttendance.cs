@@ -33,10 +33,7 @@ namespace Application.Activities
 
                 var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == _userAccessor.GetUsername());
 
-                if (user == null)
-                {
-                    return null;
-                }
+                if (user == null) return null;
 
                 var hostUsername = activity.Attendees.FirstOrDefault(x => x.IsHost)?.AppUser?.UserName;
 
